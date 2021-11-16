@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "bortexel-hardcore",
+  "version": "${version}",
+  "name": "1hp9l",
+  "description": "Fabric mod for 1HP9L mode",
+  "authors": [
+    "RuscalWorld"
+  ],
+  "contact": {
+    "website": "https://bortexel.ru",
+    "repo": "https://github.com/bortexel/1hp9l"
+  },
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "ru.bortexel.hardcore.BortexelHardcore"
+    ]
+  },
+  "mixins": [
+    "1hp9l.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.1"
+  }
+}
