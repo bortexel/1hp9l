@@ -17,6 +17,10 @@ public class StoredPlayerData extends DefaultModel {
     @Property(column = "points")
     private int points;
 
+    public StoredPlayerData() {
+        this.uuid = UUID.randomUUID();
+    }
+
     public StoredPlayerData(UUID uuid, String playerName) {
         this.uuid = uuid;
         this.playerName = playerName;

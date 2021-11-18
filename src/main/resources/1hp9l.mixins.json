@@ -4,9 +4,10 @@
   "package": "ru.bortexel.hardcore.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "LivingEntityMixin",
+    "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
-    "PlayerManagerMixin",
-    "LivingEntityMixin"
+    "PlayerManagerMixin"
   ],
   "client": [
   ],
