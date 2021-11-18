@@ -1,4 +1,13 @@
+import net.fabricmc.loom.task.RemapJarTask
+
+buildscript {
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+    }
+}
+
 plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'fabric-loom' version '0.10-SNAPSHOT'
     id 'maven-publish'
 }
@@ -12,6 +21,15 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    maven {
+        name = 'RuscalWorld Releases'
+        url = 'https://maven.ruscalworld.ru/releases'
+        credentials {
+            username = MavenUsername
+            password = MavenPassword
+        }
+    }
+    mavenCentral()
 }
 
 dependencies {
@@ -25,6 +43,8 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
+    implementation "ru.ruscalworld:storagelib:${project.storagelib_version}"
+    implementation "org.xerial:sqlite-jdbc:${project.sqlite_version}"
 }
 
 processResources {
@@ -65,6 +85,26 @@ jar {
         rename { "${it}_${project.archivesBaseName}" }
     }
 }
+
+shadowJar {
+    archiveClassifier = "all-dev"
+
+    dependencies {
+        include(dependency("ru.ruscalworld:storagelib"))
+        include(dependency("org.xerial:sqlite-jdbc"))
+    }
+
+    relocate("ru.ruscalworld.storagelib", "ru.bortexel.1hp9l.dependencies.storagelib")
+}
+
+task remapShadowJar(type: RemapJarTask, dependsOn: shadowJar) {
+    input = shadowJar.archiveFile
+    archiveFileName = shadowJar.archiveFileName.get().replaceAll("-dev\\.jar\$", ".jar")
+    addNestedDependencies = true
+    remapAccessWidener = true
+}
+
+assemble.dependsOn(remapShadowJar)
 
 // configure the maven publication
 publishing {
