@@ -11,8 +11,9 @@ import ru.bortexel.hardcore.storage.PlayerDataManager;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
-    @Inject(method = "tryUseTotem", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tryUseTotem", at = @At("RETURN"), cancellable = true)
     public void tryUseTotem(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) return; // Skip cases when totem was not used
         LivingEntity entity = (LivingEntity) (Object) this;
         if (entity instanceof ServerPlayerEntity player) {
             if (PlayerDataManager.getInstance().revokePoints(player, 20)) return;
