@@ -37,6 +37,7 @@ public abstract class PlayerAdvancementTrackerMixin {
 
         int count = 0;
         for (Advancement advancement : advancementLoader.getAdvancements()) {
+            if (this.isInsignificantAdvancement(advancement)) continue;
             if (this.getProgress(advancement).isDone()) count++;
         }
 
