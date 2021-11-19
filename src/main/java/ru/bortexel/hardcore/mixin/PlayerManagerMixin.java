@@ -23,6 +23,8 @@ public class PlayerManagerMixin {
             connection.disconnect(new LiteralText("У Вас закончились жизни"));
             ci.cancel();
         }
+
+        bortexel.getScoreboardManager().forceUpdate(player);
     }
 
     @Inject(method = "createPlayer", at = @At("TAIL"))
