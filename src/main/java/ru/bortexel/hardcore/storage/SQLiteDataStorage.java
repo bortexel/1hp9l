@@ -1,7 +1,6 @@
 package ru.bortexel.hardcore.storage;
 
 import net.minecraft.server.network.ServerPlayerEntity;
-import ru.ruscalworld.storagelib.Storage;
 import ru.ruscalworld.storagelib.exceptions.InvalidModelException;
 import ru.ruscalworld.storagelib.exceptions.NotFoundException;
 import ru.ruscalworld.storagelib.impl.SQLiteStorage;
@@ -12,7 +11,6 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class SQLiteDataStorage implements PlayerDataProvider {
     private final SQLiteStorage storage;

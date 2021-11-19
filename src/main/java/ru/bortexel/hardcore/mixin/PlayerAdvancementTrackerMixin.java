@@ -1,7 +1,6 @@
 package ru.bortexel.hardcore.mixin;
 
 import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.server.MinecraftServer;
