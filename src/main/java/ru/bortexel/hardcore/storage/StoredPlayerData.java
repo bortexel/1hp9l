@@ -16,6 +16,8 @@ public class StoredPlayerData extends DefaultModel {
     private int lives;
     @Property(column = "points")
     private int points;
+    @Property(column = "bought_lives")
+    private int boughtLives;
 
     public StoredPlayerData() {
         this.uuid = UUID.randomUUID();
@@ -25,6 +27,12 @@ public class StoredPlayerData extends DefaultModel {
         this.uuid = uuid;
         this.playerName = playerName;
         this.lives = 9;
+    }
+
+    public boolean revokePoints(int points) {
+        if (points > this.getPoints()) return false;
+        this.setPoints(this.getPoints() - points);
+        return true;
     }
 
     public UUID getUuid() {
@@ -53,5 +61,13 @@ public class StoredPlayerData extends DefaultModel {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public int getBoughtLives() {
+        return boughtLives;
+    }
+
+    public void setBoughtLives(int boughtLives) {
+        this.boughtLives = boughtLives;
     }
 }

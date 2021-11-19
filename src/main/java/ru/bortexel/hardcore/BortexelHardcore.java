@@ -1,9 +1,11 @@
 package ru.bortexel.hardcore;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
+import ru.bortexel.hardcore.commands.PurchaseCommand;
 import ru.bortexel.hardcore.storage.PlayerDataManager;
 import ru.bortexel.hardcore.storage.SQLiteDataStorage;
 
@@ -36,6 +38,10 @@ public final class BortexelHardcore implements DedicatedServerModInitializer {
             ScoreboardManager scoreboardManager = new ScoreboardManager(server.getScoreboard());
             scoreboardManager.init();
             this.setScoreboardManager(scoreboardManager);
+        });
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+            PurchaseCommand.register(dispatcher);
         });
 
         this.setPlayerDataManager(new PlayerDataManager(this.getStorage()));
