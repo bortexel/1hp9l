@@ -1,11 +1,9 @@
 package ru.bortexel.hardcore;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
-import ru.bortexel.hardcore.listeners.DeathListener;
 import ru.bortexel.hardcore.storage.PlayerDataManager;
 import ru.bortexel.hardcore.storage.SQLiteDataStorage;
 
@@ -34,12 +32,11 @@ public final class BortexelHardcore implements DedicatedServerModInitializer {
         }
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            this.setServer(server);
             ScoreboardManager scoreboardManager = new ScoreboardManager(server.getScoreboard());
             scoreboardManager.init();
             this.setScoreboardManager(scoreboardManager);
         });
-
-        ServerPlayerEvents.ALLOW_DEATH.register(new DeathListener());
 
         this.setPlayerDataManager(new PlayerDataManager(this.getStorage()));
         instance = this;

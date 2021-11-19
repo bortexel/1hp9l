@@ -60,6 +60,19 @@ public class PlayerDataManager {
         }
     }
 
+    public boolean revokePoints(ServerPlayerEntity player, int points) {
+        try {
+            StoredPlayerData playerData = this.getProvider().getPlayerData(player);
+            if (playerData.getPoints() < points) return false;
+            playerData.setPoints(playerData.getPoints() - points);
+            this.getProvider().savePlayerData(playerData);
+            return true;
+        } catch (Exception e) {
+            logger.error("Unable to revoke points from player {}", player.getEntityName(), e);
+            return false;
+        }
+    }
+
     public PlayerDataProvider getProvider() {
         return provider;
     }

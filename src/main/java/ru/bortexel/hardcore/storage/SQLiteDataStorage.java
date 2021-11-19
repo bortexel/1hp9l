@@ -52,9 +52,15 @@ public class SQLiteDataStorage implements PlayerDataProvider {
     }
 
     @Override
-    public void savePlayerData(StoredPlayerData playerData) throws InvalidModelException, SQLException {
+    public void savePlayerData(StoredPlayerData playerData) {
         this.getCache().put(playerData.getUuid(), playerData);
-        this.getStorage().save(playerData);
+        CompletableFuture.runAsync(() -> {
+            try {
+                this.getStorage().save(playerData);
+            } catch (InvalidModelException | SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public SQLiteStorage getStorage() {

@@ -27,9 +27,8 @@ public abstract class PlayerAdvancementTrackerMixin {
         if (!this.getProgress(advancement).isDone()) return;
         if (advancement.getDisplay() == null) return;
 
-        int multiplier = advancement.getDisplay().getFrame() == AdvancementFrame.CHALLENGE ? 5 : 2;
         PlayerDataManager playerDataManager = PlayerDataManager.getInstance();
-        playerDataManager.grantPoints(owner, (this.getDoneAdvancementCount() / 10 + 1) * multiplier);
+        playerDataManager.grantPoints(owner, (this.getDoneAdvancementCount() / 50 + 1) * 2);
     }
 
     public int getDoneAdvancementCount() {
