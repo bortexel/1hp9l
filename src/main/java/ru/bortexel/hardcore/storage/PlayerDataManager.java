@@ -74,6 +74,7 @@ public class PlayerDataManager {
             StoredPlayerData playerData = this.getProvider().getPlayerData(player);
             playerData.setPoints(playerData.getPoints() + points);
             this.getProvider().savePlayerData(playerData);
+            player.sendMessage(this.pointsUpdateMessage(points), true);
         } catch (Exception e) {
             logger.error("Unable to grant points to player {}", player.getEntityName(), e);
         }
@@ -83,7 +84,7 @@ public class PlayerDataManager {
         try {
             if (!playerData.revokePoints(points)) return false;
             this.getProvider().savePlayerData(playerData);
-            player.sendMessage(this.getPurchaseMessage(-points), true);
+            player.sendMessage(this.pointsUpdateMessage(-points), true);
             return true;
         } catch (Exception e) {
             logger.error("Unable to revoke points from player {}", player.getEntityName(), e);
@@ -101,11 +102,12 @@ public class PlayerDataManager {
         }
     }
 
-    private Text getPurchaseMessage(int amount) {
-        MutableText amountText = new LiteralText(amount + " ").styled(style -> style.withColor(Formatting.GOLD));
-        MutableText pointsText = new LiteralText(System.currentTimeMillis() % 10 == 0 ? "social credit" : "очков")
+    private Text pointsUpdateMessage(int amount) {
+        LiteralText signText = new LiteralText(amount > 0 ? " + " : " - ");
+        MutableText amountText = new LiteralText(Math.abs(amount) + " ").styled(style -> style.withColor(Formatting.GOLD));
+        MutableText pointsText = new LiteralText(System.currentTimeMillis() % 20 == 0 ? "social credit" : "очков")
                 .styled(style -> style.withColor(Formatting.WHITE));
-        return amountText.append(pointsText);
+        return signText.append(amountText).append(pointsText);
     }
 
     public PlayerDataProvider getProvider() {
