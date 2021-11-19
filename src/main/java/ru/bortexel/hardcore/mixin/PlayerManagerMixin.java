@@ -19,7 +19,7 @@ public class PlayerManagerMixin {
     @Inject(method = "onPlayerConnect", at = @At("HEAD"), cancellable = true)
     public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         BortexelHardcore bortexel = BortexelHardcore.getInstance();
-        if (!bortexel.getManager().canPlay(player)) {
+        if (!bortexel.getPlayerDataManager().canPlay(player)) {
             connection.disconnect(new LiteralText("У Вас закончились жизни"));
             ci.cancel();
         }

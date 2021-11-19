@@ -22,7 +22,7 @@ public class PlayerDataManager {
     }
 
     public void consumeLive(ServerPlayerEntity player) {
-        PlayerDataManager manager = BortexelHardcore.getInstance().getManager();
+        PlayerDataManager manager = BortexelHardcore.getInstance().getPlayerDataManager();
         if (!manager.decrementLiveCount(player))
             player.networkHandler.disconnect(new LiteralText("У Вас закончились жизни"));
     }
@@ -32,6 +32,7 @@ public class PlayerDataManager {
             StoredPlayerData playerData = this.getProvider().getPlayerData(player);
             playerData.setLives(playerData.getLives() - 1);
             this.getProvider().savePlayerData(playerData);
+            BortexelHardcore.getInstance().getScoreboardManager().forceUpdate(player);
             return playerData.getLives() >= 0;
         } catch (Exception e) {
             logger.error("Unable to decrement live count for player {}", player.getEntityName(), e);
