@@ -60,7 +60,7 @@ public class ScoreboardManager {
         ScoreboardObjective objective = this.getScoreboard().addObjective(
                 POINTS_OBJECTIVE,
                 ScoreboardCriterion.DUMMY,
-                new LiteralText("Жизни"),
+                new LiteralText("Очки"),
                 ScoreboardCriterion.RenderType.INTEGER
         );
 
