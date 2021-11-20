@@ -52,7 +52,7 @@ public class PlayerDataManager {
             playerData.setLives(playerData.getLives() - 1);
             this.getProvider().savePlayerData(playerData);
             BortexelHardcore.getInstance().getScoreboardManager().forceUpdate(player);
-            return playerData.getLives() >= 0;
+            return playerData.getLives() > 0;
         } catch (Exception e) {
             logger.error("Unable to decrement live count for player {}", player.getEntityName(), e);
             return false;
@@ -62,7 +62,7 @@ public class PlayerDataManager {
     public boolean canPlay(ServerPlayerEntity player) {
         try {
             StoredPlayerData playerData = this.getProvider().getPlayerData(player);
-            return playerData.getLives() >= 0;
+            return playerData.getLives() > 0;
         } catch (Exception e) {
             logger.error("Unable to verify player {}", player.getEntityName(), e);
             return false;
