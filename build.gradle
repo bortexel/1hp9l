@@ -45,6 +45,8 @@ dependencies {
     // You may need to force-disable transitiveness on them.
     implementation "ru.ruscalworld:storagelib:${project.storagelib_version}"
     implementation "org.xerial:sqlite-jdbc:${project.sqlite_version}"
+
+    compileOnly 'net.luckperms:api:5.3'
 }
 
 processResources {

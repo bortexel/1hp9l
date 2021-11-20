@@ -15,6 +15,9 @@ import ru.bortexel.hardcore.BortexelHardcore;
 import ru.bortexel.hardcore.storage.PlayerDataManager;
 import ru.bortexel.hardcore.storage.SQLiteDataStorage;
 import ru.bortexel.hardcore.storage.StoredPlayerData;
+import ru.bortexel.hardcore.util.PrefixUtil;
+
+import java.util.HashMap;
 
 @Mixin(ServerPlayerEntity.class)
 public class ServerPlayerEntityMixin {
@@ -30,6 +33,10 @@ public class ServerPlayerEntityMixin {
         MutableText text = (MutableText) cir.getReturnValue();
         SQLiteDataStorage storage = BortexelHardcore.getInstance().getStorage();
         if (text == null) text = new LiteralText(player.getEntityName());
+
+        HashMap<String, String> prefixes = PrefixUtil.getPrefixMap();
+        String prefix = PrefixUtil.getPrefix(player, prefixes);
+        text = new LiteralText(prefix).append(text);
 
         try {
             StoredPlayerData playerData = storage.getPlayerData(player);
