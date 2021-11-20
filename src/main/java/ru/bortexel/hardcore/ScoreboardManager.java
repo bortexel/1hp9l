@@ -1,5 +1,6 @@
 package ru.bortexel.hardcore;
 
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.scoreboard.ScoreboardObjective;
@@ -14,18 +15,18 @@ import ru.bortexel.hardcore.storage.StoredPlayerData;
 
 public class ScoreboardManager {
     private static final Logger logger = LoggerFactory.getLogger("ScoreboardManager");
-    private static final String LIVES_OBJECTIVE = "lives";
+    private static final String POINTS_OBJECTIVE = "lives";
     
     private final Scoreboard scoreboard;
-    private ScoreboardObjective livesObjective;
+    private ScoreboardObjective pointsObjective;
 
     public ScoreboardManager(Scoreboard scoreboard) {
         this.scoreboard = scoreboard;
     }
 
     public void init() {
-        if (!this.getScoreboard().containsObjective(LIVES_OBJECTIVE)) this.initLivesObjective();
-        this.setLivesObjective(this.getScoreboard().getObjective("lives"));
+        if (!this.getScoreboard().containsObjective(POINTS_OBJECTIVE)) this.initPointsObjective();
+        this.setPointsObjective(this.getScoreboard().getObjective("lives"));
         this.forceUpdate();
     }
 
@@ -38,19 +39,26 @@ public class ScoreboardManager {
 
     public void forceUpdate(ServerPlayerEntity player) {
         try {
-            SQLiteDataStorage storage = BortexelHardcore.getInstance().getStorage();
+            BortexelHardcore bortexel = BortexelHardcore.getInstance();
+            SQLiteDataStorage storage = bortexel.getStorage();
             StoredPlayerData playerData = storage.getPlayerData(player);
-            ScoreboardPlayerScore score = this.getScoreboard().getPlayerScore(player.getEntityName(), this.getLivesObjective());
-            score.setScore(playerData.getLives());
-            this.getScoreboard().updateScore(score);
+            ScoreboardPlayerScore score = this.getScoreboard().getPlayerScore(player.getEntityName(), this.getPointsObjective());
+
+            MinecraftServer server = bortexel.getServer();
+            if (playerData.getPoints() != score.getScore()) {
+                score.setScore(playerData.getPoints());
+                this.getScoreboard().updateScore(score);
+            }
+
+            server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, player));
         } catch (Exception e) {
             logger.error("Unable to update scoreboard", e);
         }
     }
     
-    private void initLivesObjective() {
+    private void initPointsObjective() {
         ScoreboardObjective objective = this.getScoreboard().addObjective(
-                LIVES_OBJECTIVE,
+                POINTS_OBJECTIVE,
                 ScoreboardCriterion.DUMMY,
                 new LiteralText("Жизни"),
                 ScoreboardCriterion.RenderType.INTEGER
@@ -63,11 +71,11 @@ public class ScoreboardManager {
         return scoreboard;
     }
 
-    public ScoreboardObjective getLivesObjective() {
-        return livesObjective;
+    public ScoreboardObjective getPointsObjective() {
+        return pointsObjective;
     }
 
-    protected void setLivesObjective(ScoreboardObjective livesObjective) {
-        this.livesObjective = livesObjective;
+    protected void setPointsObjective(ScoreboardObjective pointsObjective) {
+        this.pointsObjective = pointsObjective;
     }
 }

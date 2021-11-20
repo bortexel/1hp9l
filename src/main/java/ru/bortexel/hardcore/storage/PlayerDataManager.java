@@ -75,6 +75,7 @@ public class PlayerDataManager {
             playerData.setPoints(playerData.getPoints() + points);
             this.getProvider().savePlayerData(playerData);
             player.sendMessage(this.pointsUpdateMessage(points), true);
+            BortexelHardcore.getInstance().getScoreboardManager().forceUpdate(player);
         } catch (Exception e) {
             logger.error("Unable to grant points to player {}", player.getEntityName(), e);
         }
@@ -85,6 +86,7 @@ public class PlayerDataManager {
             if (!playerData.revokePoints(points)) return false;
             this.getProvider().savePlayerData(playerData);
             player.sendMessage(this.pointsUpdateMessage(-points), true);
+            BortexelHardcore.getInstance().getScoreboardManager().forceUpdate(player);
             return true;
         } catch (Exception e) {
             logger.error("Unable to revoke points from player {}", player.getEntityName(), e);
