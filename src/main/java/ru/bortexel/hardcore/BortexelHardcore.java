@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
+import ru.bortexel.hardcore.commands.GrantCommand;
 import ru.bortexel.hardcore.commands.PointsCommand;
 import ru.bortexel.hardcore.commands.PurchaseCommand;
 import ru.bortexel.hardcore.storage.PlayerDataManager;
@@ -44,6 +45,7 @@ public final class BortexelHardcore implements DedicatedServerModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             PointsCommand.register(dispatcher);
             PurchaseCommand.register(dispatcher);
+            GrantCommand.register(dispatcher);
         });
 
         this.setPlayerDataManager(new PlayerDataManager(this.getStorage()));
