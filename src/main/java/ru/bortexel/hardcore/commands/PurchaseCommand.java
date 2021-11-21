@@ -19,7 +19,7 @@ public class PurchaseCommand implements Command<ServerCommandSource> {
         PlayerDataManager playerDataManager = PlayerDataManager.getInstance();
         int result = playerDataManager.purchaseLive(player);
         if (result == 0) {
-            context.getSource().sendFeedback(new LiteralText("Вы успешно приобрели одну жизнь"), false);
+            context.getSource().sendFeedback(new LiteralText("Вы успешно приобрели одну жизнь"), true);
         } else if (result < 0) {
             throw new CommandException(new LiteralText("Не удалось приобрести жизни"));
         } else throw new CommandException(new LiteralText("Для покупки жизни необходимо ещё " + result + " очков"));
