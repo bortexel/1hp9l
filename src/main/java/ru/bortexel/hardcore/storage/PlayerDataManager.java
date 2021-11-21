@@ -37,6 +37,7 @@ public class PlayerDataManager {
             if (!this.revokePoints(player, playerData, price))
                 return price - playerData.getPoints();
             playerData.setLives(playerData.getLives() + 1);
+            playerData.setBoughtLives(playerData.getBoughtLives() + 1);
             this.getProvider().savePlayerData(playerData);
             BortexelHardcore.getInstance().getScoreboardManager().forceUpdate(player);
             return 0;
